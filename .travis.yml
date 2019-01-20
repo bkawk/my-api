@@ -8,8 +8,8 @@ services:
 - mongodb
 - docker
 before_install:
-- openssl aes-256-cbc -K $encrypted_8794bff736b3_key -iv $encrypted_8794bff736b3_iv
-  -in .env.enc -out .env -d
+- pip install --user awscli
+- export PATH=$PATH:$HOME/.local/bin
 script:
 - npm run test
 - eval $(aws ecr get-login --no-include-email --region us-east-1)
