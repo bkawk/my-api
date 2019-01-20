@@ -19,12 +19,12 @@ script:
 deploy:
   # Production Deploy if we push to master
   - provider: script
-    script: deploy_production.sh
+    script: ./deploy_production.sh
     on:
       branch: master
   # Develop Deploy if we push to develop
   - provider: script
-    script: deploy_develop.sh
+    script: ./deploy_develop.sh
     on:
       branch: develop
 env:
