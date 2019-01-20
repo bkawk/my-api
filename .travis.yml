@@ -1,9 +1,17 @@
-services:
-- docker
+language: node_js
+node_js:
+- 10.8.0
+cache:
+  directories:
+  - node_modules
+services: 
+  - mongodb
+  - docker
 before_install:
-- pip install --user awscli
-- export PATH=$PATH:$HOME/.local/bin
+- openssl aes-256-cbc -K $encrypted_8794bff736b3_key -iv $encrypted_8794bff736b3_iv
+  -in .env.enc -out .env -d
 script:
+- npm run test
 - eval $(aws ecr get-login --no-include-email --region us-east-1)
 - docker build -t my-api .
 - docker tag my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/my-api:latest
