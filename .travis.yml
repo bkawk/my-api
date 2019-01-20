@@ -5,24 +5,30 @@ cache:
   directories:
   - node_modules
 services:
-- mongodb
-- docker
+  - mongodb
+  - docker
 before_install:
-- pip install --user awscli
-- export PATH=$PATH:$HOME/.local/bin
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+install:
+  - npm install
+before_script:
+  - npm run lint
 script:
-- npm run test
-- eval $(aws ecr get-login --no-include-email --region us-east-1)
-- docker build -t my-api .
+  - npm run test
 deploy:
   # Production Deploy
-- docker tag production-my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/production-my-api:latest
+- eval $(aws ecr get-login --no-include-email --region us-east-1)
+  docker build -t production-my-api .
+  docker tag production-my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/production-my-api:latest
   docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/production-my-api:latest
   on:
     branch: master
   # Develop Deploy
-- docker tag develop-my-app:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-app:latest
-  docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-app:latest
+- eval $(aws ecr get-login --no-include-email --region us-east-1)
+  docker build -t develop-my-api .
+  docker tag develop-my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-api:latest
+  docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-api:latest
   on:
     branch: develop
 env:
