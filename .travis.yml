@@ -14,8 +14,17 @@ script:
 - npm run test
 - eval $(aws ecr get-login --no-include-email --region us-east-1)
 - docker build -t my-api .
-- docker tag my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/my-api:latest
-- docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/my-api:latest
+deploy:
+  # Production Deploy
+- docker tag production-my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/production-my-api:latest
+  docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/production-my-api:latest
+  on:
+    branch: master
+  # Develop Deploy
+- docker tag develop-my-app:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-app:latest
+  docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/develop-my-app:latest
+  on:
+    branch: develop
 env:
   global:
   - secure: bNqX0zh25lC0LSvmpZqgKoHLyOoFKiHJxo5c52vo3BIJ6vqNAep9Ke5huiYYlA7IEbIBHAQcdYPbrSsSc8mCDtMTgNz5lDVCBvxKeYR6AtBHxMOf34AAjkbW5HK0Gy5KBs1Tj4EhAq0/7hPZF0S8rfuyfGPl2oIsx0MorHGCL9KG7LyAqZj+EXXbb71iky14ZD22yUbHFw8gmVmnX5ANGKYTg6rsX03ppy4V3H8iSG9VtatS5msl1xTG1Rgg1geSX95fMBE9Mzl+v6ZgSWf/WCyjUp5mwoTMJk+CtJrEcpoBQkRoMFa9pJeF/wlIgPuqfv7mbACv6IFiBx35KgONkT0Wvn6iEvbhA7Nxdy2thzAkc8Uo+73lqsjh799akZT4+4clUxilUzGsUbUPnvQf5fJYsO1cU/hIw9qPOFVlrib6tsDCaUQ8kpbo+kx7GgtNrp+AV7IZE0TTiOdpXTMv81vHGBmI5/trNeyEuhVFczlR9Ckk9F2j6x41WRkbYwoxH0xjdUUkl7QLMHz/wD7BjwaFpSCIid5FaNcTEaYU0pPs0d/2O9imyNolY6JFf/Fo6+twOrjKsFcgXrlVh3hA9CYmke1vccC847bzzbpKd3Q+g2q2JDe41HKBjs7AXIUIJZjA6RyV0+UTfCZYV0t3b18T7HkUPlcXpA6qVSOUR8E=
