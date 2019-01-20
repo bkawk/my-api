@@ -1,0 +1,10 @@
+services:
+- docker
+before_install:
+- pip install --user awscli
+- export PATH=$PATH:$HOME/.local/bin
+script:
+- eval $(aws ecr get-login --no-include-email --region us-east-1)
+- docker build -t my-api .
+- docker tag my-api:latest 989002346127.dkr.ecr.us-east-1.amazonaws.com/my-api:latest
+- docker push 989002346127.dkr.ecr.us-east-1.amazonaws.com/my-api:latest
